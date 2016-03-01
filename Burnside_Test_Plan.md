@@ -143,3 +143,9 @@ puppet agent -t
 Many companies disallow direct, or any, access to the Internet from the Puppet Infrastructure nodes.  Most of the companies use proxies to intercept the traffic.  This often leads to many issues with installation and operation of PE as new company-derived certificates need to be in place to operate with the proxies.
 
 This test sets up a proxy for HTTP and HTTPS.  The HTTPS requires a different CA certificate so the proxy can intercept the traffic.
+
+## NC Refresh
+
+In the past the refresh of environments, classes and parameters via the NC has been somewhat problematic.  Changes to this function require testing in several scenarios (via user interaction and via API usage).
+
+## Console Features
