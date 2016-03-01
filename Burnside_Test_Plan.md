@@ -5,6 +5,7 @@
 Companies often have security requirements (as per STIG or other standards) to make `/tmp` mounted with several security options and to have the `umask` set to a restrictive value.  In this past this has caused many issues with install PE.
 
 This test is to determine if PE can be installed and upgrade with a more restrictive umask and the tmp directory with restrictive attributes.
+
 1. Bring up a EL6/7 server
 2. Change global umask (/etc/bashrc) to 027
 
@@ -51,6 +52,7 @@ mco ping
 Most companies use `hiera-eyaml` to protect data within Hiera.
 
 This test aims to prove `hiera-eyaml` works on the CLI and with puppetserver.
+
 1.  Install PE
 2. Login to Master
 3. Run
