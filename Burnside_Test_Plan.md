@@ -146,6 +146,53 @@ Many companies disallow direct, or any, access to the Internet from the Puppet I
 
 This test sets up a proxy for HTTP and HTTPS.  The HTTPS requires a different CA certificate so the proxy can intercept the traffic.
 
+See the associated Vagrant environment at [Vagrant_Env](https://github.com/beergeek/proxy_env.git)
+
+### Environment variable proxy
+
+This test creates a proxy server plus a Puppet master.  The Puppet master will have the following as environment variables:
+
+  ```shell
+  http_proxy=10.20.1.127:3127
+  https_proxy=10.20.1.127:3127
+  ```
+
+  This will set all HTTP and HTTPS traffic to be sent to the proxy, with the exception of the Puppet master's traffic.
+
+1. Clone the Vagrant environment
+
+  ```shell
+  git clone https://github.com/beergeek/test_vagrant.git
+  ```
+
+2. Bring up the environment.  (This will great a proxy node, plus two Puppet masters so you need some memory for this test)
+
+  ```shell
+  cd proxy_env
+  vagrant up
+  ```
+
+3. Once the environment is up, log into the first master.
+
+  ```shell
+  vagrant ssh master0.puppetlabs.vm
+  ```
+
+4. Attempt to run puppet
+
+  ```shell
+  puppet agent -t
+  ```
+
+5. Attempt to run Code Manager. Use [CM_FS](https://docs.puppetlabs.com/pe/latest/code_mgr_scripts.html) for details.  Trigger refresh in NC.  Determine if the number of classes is correct compared to actual classes (check `/var/log/puppetlabs/console-services/console-services.log`).  As we are behind a proxy we will need to edit the `/etc/puppetlabs/puppetserver/conf.d/code-manager.conf` file to enable `shellgit`, this is not documented for some crazy reason. `git-provider : "shellgit"`.  Once this is all completed run code manager.
+6. Attempt to install `hiera-eyaml`
+
+  ```shell
+  /opt/puppetlabs/puppet/bin/gem install hiera-eyaml
+  /opt/puppetlabs/bin/puppetserver gem install hiera-eyaml
+  ```
+7. Attempt to run Code Manager again.
+
 ## NC Refresh
 
 In the past the refresh of environments, classes and parameters via the NC has been somewhat problematic.  Changes to this function require testing in several scenarios (via user interaction and via API usage).
